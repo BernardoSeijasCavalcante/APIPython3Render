@@ -32,7 +32,7 @@ async def root(user:User):
         query = "SELECT * FROM UserPassenger WHERE (email = %s OR phoneNumber = %s) AND password = %s"
         cursor.execute(query, (user.email, user.phoneNumber, user.password))
 
-        rows = cursor.fetchall()
+        row = cursor.fetchone()
         
         # Obtém os nomes das colunas
         columns = [col[0] for col in cursor.description]
