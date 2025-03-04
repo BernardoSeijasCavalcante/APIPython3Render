@@ -36,7 +36,7 @@ async def root(user:User):
         
         # Obtém os nomes das colunas
         columns = [col[0] for col in cursor.description]
-        data = [dict(zip(columns, row)) for row in rows]
+        data = [dict(zip(columns, row))]
         
         conn.close()
         return {data}
