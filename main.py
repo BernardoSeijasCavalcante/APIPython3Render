@@ -14,14 +14,22 @@ password = 'restaurantSystem123'  # Sem `{}` ao redor da senha
 def get_connection():
     return pymssql.connect(server=server, user=username, password=password, database=database)
 
+class User():
+    def __init__(self,name:str, lastName:str, email:str, phoneNumber:str,password:str):
+        self.name = name
+        self.lastName = lastName
+        self.email = email
+        self.phoneNumber = phoneNumber
+        self.password = password
+        
 
-@app.get("/")
-async def root():
+@app.post("/loginUser")
+async def root(user:User):
     try:
         conn = get_connection()
         cursor = conn.cursor()
         
-        cursor.execute("SELECT TOP 3 * FROM Product")
+        cursor.execute(f"SELECT * FROM UserPassenger WHERE (email = {user.email} || phoneNumber = {user.phoneNumber}) && password = {user.password}")
         rows = cursor.fetchall()
         
         # Obtém os nomes das colunas
@@ -34,7 +42,7 @@ async def root():
     except Exception as e:
         return {"error": str(e)}
 
-
 @app.get("/items/{item_id}")
 def read_item(item_id: int, q: Optional[str] = None):
     return {"item_id": item_id, "q": q}
+
