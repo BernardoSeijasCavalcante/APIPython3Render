@@ -1,6 +1,7 @@
 from typing import Optional
 from fastapi import FastAPI
 import pymssql
+from pydantic import BaseModel
 import json
 
 app = FastAPI()
@@ -14,13 +15,12 @@ password = 'restaurantSystem123'  # Sem `{}` ao redor da senha
 def get_connection():
     return pymssql.connect(server=server, user=username, password=password, database=database)
 
-class User():
-    def __init__(self,name:str, lastName:str, email:str, phoneNumber:str,password:str):
-        self.name = name
-        self.lastName = lastName
-        self.email = email
-        self.phoneNumber = phoneNumber
-        self.password = password
+class User(BaseModel):
+    name:str
+    lastName:str
+    email:str
+    phoneNumber:str
+    password:str
         
 
 @app.post("/loginUser")
