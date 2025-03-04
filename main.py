@@ -29,7 +29,9 @@ async def root(user:User):
         conn = get_connection()
         cursor = conn.cursor()
         
-        cursor.execute(f"SELECT * FROM UserPassenger WHERE (email = {user.email} || phoneNumber = {user.phoneNumber}) && password = {user.password}")
+        query = "SELECT * FROM UserPassenger WHERE (email = %s OR phoneNumber = %s) AND password = %s"
+        cursor.execute(query, (user.email, user.phoneNumber, user.password))
+
         rows = cursor.fetchall()
         
         # Obtém os nomes das colunas
