@@ -34,9 +34,12 @@ async def root(user:User):
 
         row = cursor.fetchone()
         
+        if not row:
+            return {"error": "Usuário não encontrado"}
+
         # Obtém os nomes das colunas
-        columns = [col[0] for col in cursor.description]
-        data = [dict(zip(columns, row))]
+        columns = [col[0] for col in cursor.description] if cursor.description else []
+        data = dict(zip(columns, row))
         
         conn.close()
         return {data}
