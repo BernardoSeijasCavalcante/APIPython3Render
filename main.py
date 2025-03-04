@@ -39,7 +39,7 @@ async def root(user:User):
         data = [dict(zip(columns, row)) for row in rows]
         
         conn.close()
-        return {"data": data}
+        return {data}
     
     except Exception as e:
         return {"error": str(e)}
