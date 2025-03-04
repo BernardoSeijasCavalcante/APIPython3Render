@@ -35,7 +35,13 @@ async def root(user:User):
         row = cursor.fetchone()
         
         if not row:
-            return {"error": "Usuário não encontrado"}
+            query = "SELECT * FROM UserDriver WHERE (email = %s OR phoneNumber = %s) AND password = %s"
+            cursor.execute(query, (user.email, user.phoneNumber, user.password))
+            row = cursor.fetchone()
+            if not row:
+                return {"name":"Login ou senha inválidos!"}
+
+        
 
         # Obtém os nomes das colunas
         columns = [col[0] for col in cursor.description] if cursor.description else []
