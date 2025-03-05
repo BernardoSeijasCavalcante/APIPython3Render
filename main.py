@@ -25,6 +25,9 @@ class User(BaseModel):
     cpf:str
     rg:str
     gender:str
+    dayBirthday:int
+    monthBirthday:str
+    yearBirthday:int
         
 
 @app.post("/loginUser")
@@ -63,8 +66,18 @@ async def registerDriver(user:User):
         conn = get_connection()
         cursor = conn.cursor()    
 
-        query = "INSERT INTO UserDriver (name, lastName, email, phoneNumber, password, cpf, rg, gender) VALUES (%s,%s,%s,%s,%s,%s,%s,%s);"
-        cursor.execute(query,(user.name,user.lastName,user.email,user.phoneNumber,user.password,user.cpf,user.rg,user.gender))
+        query = "INSERT INTO UserDriver (name, lastName, email, phoneNumber, password, cpf, rg, gender,dayBirthday,monthBirthday,yearBirthday) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"
+        cursor.execute(query,(user.name,
+        user.lastName,
+        user.email,
+        user.phoneNumber,
+        user.password,
+        user.cpf,
+        user.rg,
+        user.gender,
+        user.dayBirthday,
+        user.monthBirthday,
+        user.yearBirthday))
 
         conn.commit()
 
