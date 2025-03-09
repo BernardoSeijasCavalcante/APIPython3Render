@@ -125,7 +125,7 @@ async def registerPassenger(user:User):
 async def updateUserDriver(user:User):
     try:
         conn = get_connection()
-        cursor = conn.cursor
+        cursor = conn.cursor()
 
         query = "UPDATE UserDriver SET name = %s, lastName = %s, email = %s, phoneNumber = %s, password = %s, cpf = %s, rg = %s, gender = %s, dayBirthday = %s, monthBirthday = %s, yearBirthday = %s WHERE id = %s"
         cursor.execute(query, user.name, 
