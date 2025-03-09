@@ -128,18 +128,18 @@ async def updateUserDriver(user:User):
         cursor = conn.cursor()
 
         query = "UPDATE UserDriver SET name = %s, lastName = %s, email = %s, phoneNumber = %s, password = %s, cpf = %s, rg = %s, gender = %s, dayBirthday = %s, monthBirthday = %s, yearBirthday = %s WHERE id = %s"
-        cursor.execute(query, user.name, 
-                       user.lastName, 
-                       user.email, 
-                       user.phoneNumber, 
-                       user.password, 
-                       user.cpf, 
-                       user.rg, 
-                       user.gender, 
-                       user.dayBirthday, 
-                       user.monthBirthday, 
-                       user.yearBirthday, 
-                       user.id)
+        cursor.execute(query, (user.name, 
+        user.lastName, 
+        user.email, 
+        user.phoneNumber, 
+        user.password, 
+        user.cpf, 
+        user.rg, 
+        user.gender, 
+        user.dayBirthday, 
+        user.monthBirthday, 
+        user.yearBirthday, 
+        user.id))
 
         conn.commit()
 
@@ -157,12 +157,12 @@ async def updateUserPassenger(user:User):
         cursor = conn.cursor()
 
         query = "UPDATE UserPassenger SET name = %s, lastName = %s, email = %s, phoneNumber = %s, password = %s WHERE id = %s"
-        cursor.execute(query, user.name, 
-                       user.lastName, 
-                       user.email, 
-                       user.phoneNumber, 
-                       user.password,  
-                       user.id)
+        cursor.execute(query, (user.name, 
+        user.lastName, 
+        user.email, 
+        user.phoneNumber, 
+        user.password,  
+        user.id))
 
         conn.commit()
 
@@ -180,7 +180,7 @@ async def deleteUserDriver(user:User):
         cursor = conn.cursor()
 
         query = "DELETE FROM UserDriver WHERE id = %s"
-        cursor.execute(query,user.id)
+        cursor.execute(query,(user.id))
 
         conn.commit()
 
@@ -198,7 +198,7 @@ async def deleteUserPassenger(user:User):
         cursor = conn.cursor()
 
         query = "DELETE FROM UserPassenger WHERE id = %s"
-        cursor.execute(query,user.id)
+        cursor.execute(query,(user.id))
 
         conn.commit()
 
