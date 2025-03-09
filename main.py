@@ -154,7 +154,7 @@ async def updateUserDriver(user:User):
 async def updateUserPassenger(user:User):
     try:
         conn = get_connection()
-        cursor = conn.cursor
+        cursor = conn.cursor()
 
         query = "UPDATE UserPassenger SET name = %s, lastName = %s, email = %s, phoneNumber = %s, password = %s WHERE id = %s"
         cursor.execute(query, user.name, 
@@ -173,7 +173,7 @@ async def updateUserPassenger(user:User):
     except Exception as e:
         return {"error: ":str(e)}
     
-@app.post("deleteUserDriver")
+@app.post("/deleteUserDriver")
 async def deleteUserDriver(user:User):
     try:
         conn = get_connection()
@@ -191,7 +191,7 @@ async def deleteUserDriver(user:User):
     except Exception as e:
         return {"error: ": str(e)}
 
-@app.post("deleteUserPassenger")
+@app.post("/deleteUserPassenger")
 async def deleteUserPassenger(user:User):
     try:
         conn = get_connection()
