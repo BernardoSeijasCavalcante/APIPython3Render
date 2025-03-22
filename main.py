@@ -86,7 +86,7 @@ async def registerDriver(user:User):
 
         conn.commit()
 
-        query = "SELECT * FROM UserDriver WHERE (email = %s OR phoneNumber = %s) AND password = %s"
+        query = "SELECT * FROM UserDriver WHERE (email = %s AND phoneNumber = %s) AND password = %s"
         cursor.execute(query, (user.email, user.phoneNumber, user.password))
         row = cursor.fetchone()
 
@@ -111,7 +111,7 @@ async def registerPassenger(user:User):
 
         conn.commit()
 
-        query = "SELECT * FROM UserPassenger WHERE (email = %s OR phoneNumber = %s) AND password = %s"
+        query = "SELECT * FROM UserPassenger WHERE (email = %s AND phoneNumber = %s) AND password = %s"
         cursor.execute(query, (user.email, user.phoneNumber, user.password))
         row = cursor.fetchone()
 
@@ -217,33 +217,33 @@ async def deleteUserPassenger(user:User):
 async def securityVoiceConfigurationPassenger(user:User):
     try:
         conn = get_connection()
-        cursor = conn.cursor
+        cursor = conn.cursor()
 
         query = "UPDATE UserPassenger SET emergencyCode = %s, uAudioCode = %s, commandVoice = %s WHERE id = %s"
         cursor.execute(query, (user.emergencyCode,user.uAudioCode,user.commandVoice,user.id))
 
-        conn.commit
+        conn.commit()
 
         cursor.close()
-        conn.close
+        conn.close()
         return {"message": "Configurações de SecurityVoice salvas com sucesso!"}
     except Exception as e:
         return {"error": str(e)}
     
-    
+
 @app.post("/securityVoiceConfigurationDriver")
 async def securityVoiceConfigurationDriver(user:User):
     try:
         conn = get_connection()
-        cursor = conn.cursor
+        cursor = conn.cursor()
 
         query = "UPDATE UserDriver SET emergencyCode = %s, uAudioCode = %s, commandVoice = %s WHERE id = %s"
         cursor.execute(query, (user.emergencyCode,user.uAudioCode,user.commandVoice,user.id))
 
-        conn.commit
+        conn.commit()
 
         cursor.close()
-        conn.close
+        conn.close()
         return {"message": "Configurações de SecurityVoice salvas com sucesso!"}
     except Exception as e:
         return {"error": str(e)}
