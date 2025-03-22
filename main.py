@@ -28,6 +28,10 @@ class User(BaseModel):
     dayBirthday:int
     monthBirthday:str
     yearBirthday:int
+
+    emergencyCode:str
+    uAudioCode:str
+    commandVoice:bool
         
 
 @app.post("/loginUser")
@@ -36,13 +40,13 @@ async def loginUser(user:User):
         conn = get_connection()
         cursor = conn.cursor()
         
-        query = "SELECT * FROM UserPassenger WHERE (email = %s OR phoneNumber = %s) AND password = %s"
+        query = "SELECT * FROM UserPassenger WHERE (email = %s AND phoneNumber = %s) AND password = %s"
         cursor.execute(query, (user.email, user.phoneNumber, user.password))
 
         row = cursor.fetchone()
         
         if not row:
-            query = "SELECT * FROM UserDriver WHERE (email = %s OR phoneNumber = %s) AND password = %s"
+            query = "SELECT * FROM UserDriver WHERE (email = %s AND phoneNumber = %s) AND password = %s"
             cursor.execute(query, (user.email, user.phoneNumber, user.password))
             row = cursor.fetchone()
             if not row:
@@ -208,5 +212,38 @@ async def deleteUserPassenger(user:User):
         return {"message: ": "Usuário deletado com sucesso!"}
     except Exception as e:
         return {"error: ": str(e)}
+    
+@app.post("/securityVoiceConfigurationPassenger")
+async def securityVoiceConfigurationPassenger(user:User):
+    try:
+        conn = get_connection()
+        cursor = conn.cursor
 
+        query = "UPDATE UserPassenger SET emergencyCode = %s, uAudioCode = %s, commandVoice = %s WHERE id = %s"
+        cursor.execute(query, (user.emergencyCode,user.uAudioCode,user.commandVoice,user.id))
 
+        conn.commit
+
+        cursor.close()
+        conn.close
+        return {"message": "Configurações de SecurityVoice salvas com sucesso!"}
+    except Exception as e:
+        return {"error": str(e)}
+    
+    
+@app.post("/securityVoiceConfigurationDriver")
+async def securityVoiceConfigurationDriver(user:User):
+    try:
+        conn = get_connection()
+        cursor = conn.cursor
+
+        query = "UPDATE UserDriver SET emergencyCode = %s, uAudioCode = %s, commandVoice = %s WHERE id = %s"
+        cursor.execute(query, (user.emergencyCode,user.uAudioCode,user.commandVoice,user.id))
+
+        conn.commit
+
+        cursor.close()
+        conn.close
+        return {"message": "Configurações de SecurityVoice salvas com sucesso!"}
+    except Exception as e:
+        return {"error": str(e)}
