@@ -71,7 +71,7 @@ async def registerDriver(user:User):
         conn = get_connection()
         cursor = conn.cursor()    
 
-        query = "INSERT INTO UserDriver (name, lastName, email, phoneNumber, password, cpf, rg, gender,dayBirthday,monthBirthday,yearBirthday) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"
+        query = "INSERT INTO UserDriver (name, lastName, email, phoneNumber, password, cpf, rg, gender,dayBirthday,monthBirthday,yearBirthday, emergencyCode, uAudioCode, commandVoice) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"
         cursor.execute(query,(user.name,
         user.lastName,
         user.email,
@@ -82,7 +82,10 @@ async def registerDriver(user:User):
         user.gender,
         user.dayBirthday,
         user.monthBirthday,
-        user.yearBirthday))
+        user.yearBirthday,
+        user.emergencyCode,
+        user.uAudioCode,
+        user.commandVoice))
 
         conn.commit()
 
@@ -106,8 +109,8 @@ async def registerPassenger(user:User):
         conn = get_connection()
         cursor = conn.cursor()    
 
-        query = "INSERT INTO UserPassenger (name, lastName, email, phoneNumber, password) VALUES (%s,%s,%s,%s,%s);"
-        cursor.execute(query,(user.name,user.lastName,user.email,user.phoneNumber,user.password))
+        query = "INSERT INTO UserPassenger (name, lastName, email, phoneNumber, password, emergencyCode, uAudioCode, commandVoice) VALUES (%s,%s,%s,%s,%s,%s,%s,%s);"
+        cursor.execute(query,(user.name,user.lastName,user.email,user.phoneNumber,user.password,user.emergencyCode,user.uAudioCode, user.commandVoice))
 
         conn.commit()
 
