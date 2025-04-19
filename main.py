@@ -16,7 +16,7 @@ def get_connection():
     return pymssql.connect(server=server, user=username, password=password, database=database)
 
 class User(BaseModel):
-    id:int
+    id:str
     name:str
     lastName:str
     email:str
@@ -25,13 +25,13 @@ class User(BaseModel):
     cpf:str
     rg:str
     gender:str
-    dayBirthday:int
+    dayBirthday:str
     monthBirthday:str
-    yearBirthday:int
+    yearBirthday:str
 
     emergencyCode:str
     uAudioCode:str
-    commandVoice:bool
+    commandVoice:str
         
 
 @app.post("/loginUser")
