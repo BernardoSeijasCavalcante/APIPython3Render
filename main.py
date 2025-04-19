@@ -16,7 +16,7 @@ def get_connection():
     return pymssql.connect(server=server, user=username, password=password, database=database)
 
 class User(BaseModel):
-    id:str
+    id:int
     name:str
     lastName:str
     email:str
