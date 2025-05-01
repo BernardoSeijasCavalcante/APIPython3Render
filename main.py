@@ -32,7 +32,19 @@ class User(BaseModel):
     emergencyCode:str
     uAudioCode:str
     commandVoice:str
-        
+
+class Travel(BaseModel):
+    id:int
+    driverId:int
+    passengerId:int
+    destination:str
+    origin:str
+    date:str
+    cust:str
+    duration:str
+    driverName:str
+    passengerName:str
+    state:str
 
 @app.post("/loginUser")
 async def loginUser(user:User):
@@ -248,5 +260,56 @@ async def securityVoiceConfigurationDriver(user:User):
         cursor.close()
         conn.close()
         return {"message": "Configurações de SecurityVoice salvas com sucesso!"}
+    except Exception as e:
+        return {"error": str(e)}
+    
+@app.get("/refreshDriverTravel")
+async def refreshDriverTravel():
+    try:
+        conn = get_connection()
+        cursor = conn.cursor()
+
+        query = "SELECT * FROM RegisterTravel WHERE state = 'ap/8S8fR9vOY4zWoxmU3wA=='"
+        cursor.execute(query)
+
+        rows = cursor.fetchall()
+
+        columns = [col[0] for col in cursor.description] if cursor.description else []
+        data = [dict(zip(columns, row)) for row in rows]
+        
+        cursor.close()
+        conn.close()
+        return data
+    except Exception as e:
+        return {"error": str(e)}
+
+@app.post("/requestingTravel")
+async def requestingTravel(travel:Travel):
+    try:
+        conn = get_connection()
+        cursor = conn.cursor()
+
+        query = "INSERT INTO RegisterTravel (idDriver, idPassenger, destination, cust, date,status,duration,origin) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
+        cursor.execute(query , (travel.driverId,
+                                   travel.passengerId,
+                                   travel.destination,
+                                   travel.cust,
+                                   travel.date,
+                                   travel.state,
+                                   travel.duration,
+                                   travel.origin))
+
+        conn.commit()
+
+        query = "SELECT * FROM RegisterTravel WHERE idPassenger = %s AND status = %s"
+        cursor.execute(query, (travel.passengerId, travel.state))
+        row = cursor.fetchone()
+
+        columns = [col[0] for col in cursor.description] if cursor.description else []
+        data = dict(zip(columns, row))
+
+        cursor.close()
+        conn.close()
+        return data
     except Exception as e:
         return {"error": str(e)}
