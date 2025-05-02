@@ -44,7 +44,7 @@ class Travel(BaseModel):
     duration:str
     driverName:str
     passengerName:str
-    state:str
+    status:str
 
 @app.post("/loginUser")
 async def loginUser(user:User):
@@ -269,7 +269,7 @@ async def refreshDriverTravel():
         conn = get_connection()
         cursor = conn.cursor()
 
-        query = "SELECT * FROM RegisterTravel WHERE status = 'ap/8S8fR9vOY4zWoxmU3wA=='"
+        query = "SELECT rt.*, up.name as passengerName FROM [dbo].[RegisterTravel] as rt INNER JOIN [dbo].[UserPassenger] AS up ON rt.passengerId = up.id WHERE rt.status = 'ap/8S8fR9vOY4zWoxmU3wA==';"
         cursor.execute(query)
 
         rows = cursor.fetchall()
