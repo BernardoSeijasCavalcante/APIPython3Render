@@ -269,7 +269,7 @@ async def refreshDriverTravel():
         conn = get_connection()
         cursor = conn.cursor()
 
-        query = "SELECT * FROM RegisterTravel WHERE state = 'ap/8S8fR9vOY4zWoxmU3wA=='"
+        query = "SELECT * FROM RegisterTravel WHERE status = 'ap/8S8fR9vOY4zWoxmU3wA=='"
         cursor.execute(query)
 
         rows = cursor.fetchall()
