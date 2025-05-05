@@ -313,3 +313,99 @@ async def requestingTravel(travel:Travel):
         return data
     except Exception as e:
         return {"error": str(e)}
+
+#SELECT solution.*, UserDriver.name FROM (SELECT rt.*, up.name as passengerName FROM [dbo].[RegisterTravel] as rt INNER JOIN [dbo].[UserPassenger] AS up ON rt.passengerId = up.id WHERE rt.status = 'ap/8S8fR9vOY4zWoxmU3wA==') as solution INNER JOIN UserDriver ON solution.driverId = [dbo].[UserDriver].id;
+
+@app.post("/cancelTravel")
+async def cancelTravel(travel:Travel):
+    try:
+        conn = get_connection()
+        cursor = conn.cursor()
+
+        query = "UPDATE RegisterTravel SET status = 'fjlPwvXJE2eSo+BZz4DzNw==' WHERE id = %s"
+        cursor.execute(query , (travel.id))
+
+        conn.commit()
+
+        query = "SELECT * FROM RegisterTravel WHERE id = %s"
+        cursor.execute(query, (travel.id))
+        row = cursor.fetchone()
+
+        columns = [col[0] for col in cursor.description] if cursor.description else []
+        data = dict(zip(columns, row))
+
+        cursor.close()
+        conn.close()
+        return data
+    except Exception as e:
+        return {"error": str(e)}
+    
+@app.post("/waitingDriver")
+async def waitingDriver(travel:Travel):
+    try:
+        conn = get_connection()
+        cursor = conn.cursor()
+
+        query = "SELECT rt.*, ud.name as passengerName FROM [dbo].[RegisterTravel] as rt INNER JOIN [dbo].[UserDriver] AS ud ON rt.driverId = ud.id WHERE rt.id = %s;"
+        cursor.execute(query, (travel.id))
+        row = cursor.fetchone()
+
+        columns = [col[0] for col in cursor.description] if cursor.description else []
+        data = dict(zip(columns, row))
+
+        cursor.close()
+        conn.close()
+        return data
+    except Exception as e:
+        return {"error": str(e)}
+    
+@app.post("/acceptingTravel")
+async def acceptingTravel(travel:Travel):
+    try:
+        conn = get_connection()
+        cursor = conn.cursor()
+
+        query = "UPDATE RegisterTravel SET status = 'IMt9PpewSWpLdtZ4x4abgw==', driverId = %s WHERE id = %s"
+        cursor.execute(query , (travel.driverId,travel.id))
+
+        conn.commit()
+
+        query = "SELECT * FROM RegisterTravel WHERE id = %s"
+        cursor.execute(query, (travel.id))
+        row = cursor.fetchone()
+
+        columns = [col[0] for col in cursor.description] if cursor.description else []
+        data = dict(zip(columns, row))
+
+        cursor.close()
+        conn.close()
+        return data
+    except Exception as e:
+        return {"error": str(e)}
+    
+
+@app.post("/travelFinish")
+async def travelFinish(travel:Travel):
+    try:
+        conn = get_connection()
+        cursor = conn.cursor()
+
+        query = "UPDATE RegisterTravel SET status = 'kdmwhSorOfGpDVUp9saoKg==' WHERE id = %s"
+        cursor.execute(query , (travel.id))
+
+        conn.commit()
+
+        query = "SELECT * FROM RegisterTravel WHERE id = %s"
+        cursor.execute(query, (travel.id))
+        row = cursor.fetchone()
+
+        columns = [col[0] for col in cursor.description] if cursor.description else []
+        data = dict(zip(columns, row))
+
+        cursor.close()
+        conn.close()
+        return data
+    except Exception as e:
+        return {"error": str(e)}
+    
+    
