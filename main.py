@@ -289,7 +289,7 @@ async def requestingTravel(travel:Travel):
         conn = get_connection()
         cursor = conn.cursor()
 
-        query = "INSERT INTO RegisterTravel (idDriver, idPassenger, destination, cust, date,status,duration,origin) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
+        query = "INSERT INTO RegisterTravel (driverId, passengerId, destination, cust, date,status,duration,origin) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
         cursor.execute(query , (travel.driverId,
                                    travel.passengerId,
                                    travel.destination,
@@ -301,7 +301,7 @@ async def requestingTravel(travel:Travel):
 
         conn.commit()
 
-        query = "SELECT * FROM RegisterTravel WHERE idPassenger = %s AND status = %s"
+        query = "SELECT * FROM RegisterTravel WHERE passengerId = %s AND status = %s"
         cursor.execute(query, (travel.passengerId, travel.state))
         row = cursor.fetchone()
 
