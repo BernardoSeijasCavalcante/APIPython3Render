@@ -295,14 +295,14 @@ async def requestingTravel(travel:Travel):
                                    travel.destination,
                                    travel.cust,
                                    travel.date,
-                                   travel.state,
+                                   travel.status,
                                    travel.duration,
                                    travel.origin))
 
         conn.commit()
 
         query = "SELECT * FROM RegisterTravel WHERE passengerId = %s AND status = %s"
-        cursor.execute(query, (travel.passengerId, travel.state))
+        cursor.execute(query, (travel.passengerId, travel.status))
         row = cursor.fetchone()
 
         columns = [col[0] for col in cursor.description] if cursor.description else []
