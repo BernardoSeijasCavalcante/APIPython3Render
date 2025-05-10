@@ -423,13 +423,10 @@ async def activityRefresh(user:User):
             query = "SELECT * FROM [dbo].[RegisterTravel] WHERE passengerId = %s;"
         else:
             query = "SELECT * FROM [dbo].[RegisterTravel] WHERE driverId = %s;"
+
         cursor.execute(query , (user.id))
-
-        conn.commit()
-
-        query = "SELECT * FROM RegisterTravel WHERE id = %s"
-        cursor.execute(query, (travel.id))
-        row = cursor.fetchone()
+        # activityRefresh
+        row = cursor.fetchall()
 
         columns = [col[0] for col in cursor.description] if cursor.description else []
         data = dict(zip(columns, row))
