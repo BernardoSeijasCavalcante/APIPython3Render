@@ -420,9 +420,9 @@ async def activityRefresh(user:User):
         cursor = conn.cursor()
 
         if(user.cpf == "NV9uEyh7kNQ+tuVcXGjOfA=="):
-            query = "SELECT * FROM [dbo].[RegisterTravel] WHERE passengerId = %s;"
+            query = "SELECT rt.*, up.name as driverName FROM [dbo].[RegisterTravel] as rt INNER JOIN [dbo].[UserDriver] AS up ON rt.driverId = up.id WHERE rt.passengerId = %s;"
         else:
-            query = "SELECT * FROM [dbo].[RegisterTravel] WHERE driverId = %s;"
+            query = "SELECT rt.*, up.name as passengerName FROM [dbo].[RegisterTravel] as rt INNER JOIN [dbo].[UserPassenger] AS up ON rt.passengerId = up.id WHERE rt.driverId = %s;"
 
         cursor.execute(query , (user.id))
         # activityRefresh
