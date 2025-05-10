@@ -351,7 +351,7 @@ async def waitingDriver(travel:Travel):
         row = cursor.fetchone()
 
         if not row:
-            query = "SELECT rt.*FROM [dbo].[RegisterTravel] as rt WHERE rt.id = %s;"
+            query = "SELECT rt.* FROM [dbo].[RegisterTravel] as rt WHERE rt.id = %s;"
             cursor.execute(query, (travel.id))
             row = cursor.fetchone()
 
@@ -413,4 +413,30 @@ async def travelFinish(travel:Travel):
     except Exception as e:
         return {"error": str(e)}
     
+@app.post("/activityRefresh")
+async def activityRefresh(user:User):
+    try:
+        conn = get_connection()
+        cursor = conn.cursor()
+
+        if(user.cpf == "NV9uEyh7kNQ+tuVcXGjOfA=="):
+            query = "SELECT * FROM [dbo].[RegisterTravel] WHERE passengerId = %s;"
+        else:
+            query = "SELECT * FROM [dbo].[RegisterTravel] WHERE driverId = %s;"
+        cursor.execute(query , (user.id))
+
+        conn.commit()
+
+        query = "SELECT * FROM RegisterTravel WHERE id = %s"
+        cursor.execute(query, (travel.id))
+        row = cursor.fetchone()
+
+        columns = [col[0] for col in cursor.description] if cursor.description else []
+        data = dict(zip(columns, row))
+
+        cursor.close()
+        conn.close()
+        return data
+    except Exception as e:
+        return {"error": str(e)}
     
