@@ -351,7 +351,7 @@ async def waitingDriver(travel:Travel):
         row = cursor.fetchone()
 
         if not row:
-            query = "SELECT rt.*FROM [dbo].[RegisterTravel] WHERE rt.id = %s;"
+            query = "SELECT rt.*FROM [dbo].[RegisterTravel] as rt WHERE rt.id = %s;"
             cursor.execute(query, (travel.id))
             row = cursor.fetchone()
 
