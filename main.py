@@ -346,9 +346,14 @@ async def waitingDriver(travel:Travel):
         conn = get_connection()
         cursor = conn.cursor()
 
-        query = "SELECT rt.*, ud.name as passengerName FROM [dbo].[RegisterTravel] as rt INNER JOIN [dbo].[UserDriver] AS ud ON rt.driverId = ud.id WHERE rt.id = %s;"
+        query = "SELECT rt.*, ud.name as driverName FROM [dbo].[RegisterTravel] as rt INNER JOIN [dbo].[UserDriver] AS ud ON rt.driverId = ud.id WHERE rt.id = %s;"
         cursor.execute(query, (travel.id))
         row = cursor.fetchone()
+
+        if not row:
+            query = "SELECT rt.*FROM [dbo].[RegisterTravel] WHERE rt.id = %s;"
+            cursor.execute(query, (travel.id))
+            row = cursor.fetchone()
 
         columns = [col[0] for col in cursor.description] if cursor.description else []
         data = dict(zip(columns, row))
