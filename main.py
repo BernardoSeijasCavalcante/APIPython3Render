@@ -426,10 +426,10 @@ async def activityRefresh(user:User):
 
         cursor.execute(query , (user.id))
         # activityRefresh
-        row = cursor.fetchall()
+        rows = cursor.fetchall()
 
         columns = [col[0] for col in cursor.description] if cursor.description else []
-        data = dict(zip(columns, row))
+        data = [dict(zip(columns, row)) for row in rows]
 
         cursor.close()
         conn.close()
